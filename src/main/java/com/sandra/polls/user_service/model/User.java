@@ -1,29 +1,36 @@
 package com.sandra.polls.user_service.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
-@Entity
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "First name cannot be empty")
     private String firstName;
+
+    @NotBlank(message = "Last name cannot be empty")
     private String lastName;
+
+    @Email(message = "Email should be valid")
+    @NotBlank(message = "Email cannot be empty")
     private String email;
+
+    @NotNull(message = "Age cannot be null")
+    @Min(value = 1, message = "Age must be at least 1")
     private Integer age;
+
+    @NotBlank(message = "Address cannot be empty")
     private String address;
+
+    @NotNull(message = "Joining date cannot be null")
     private LocalDate joiningDate;
 
-    public User(){
+    public User() { }
 
-    }
-
-    public User(Long id, String firstName, String lastName, String email, int age, String address, LocalDate joiningDate) {
+    public User(Long id, String firstName, String lastName, String email,
+                Integer age, String address, LocalDate joiningDate) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -36,51 +43,43 @@ public class User {
     public Long getId() {
         return this.id;
     }
-
     public String getFirstName() {
         return this.firstName;
     }
-
     public String getLastName() {
         return this.lastName;
     }
-
     public String getEmail() {
         return this.email;
     }
-
-    public int getAge() {
+    public Integer getAge() {
         return this.age;
     }
-
     public String getAddress() {
         return this.address;
     }
-
     public LocalDate getJoiningDate() {
         return this.joiningDate;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
-
     public void setAddress(String address) {
         this.address = address;
     }
-
     public void setJoiningDate(LocalDate joiningDate) {
         this.joiningDate = joiningDate;
     }

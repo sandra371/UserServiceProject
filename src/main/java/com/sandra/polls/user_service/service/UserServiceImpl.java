@@ -1,44 +1,31 @@
 package com.sandra.polls.user_service.service;
-
+import com.sandra.polls.user_service.client.PollAnswerClient;
 import com.sandra.polls.user_service.model.User;
 import com.sandra.polls.user_service.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PollAnswerClient pollAnswerClient;
 
-    @Override
-    public User createUser(User user) {
-        userRepository.createUser(
-                new User(
-                        null,
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getEmail(),
-                        user.getAge(),
-                        user.getAddress(),
-                        LocalDate.now()
-                )
-        );
-        return user;
+    // Constructor injection
+    public UserServiceImpl(UserRepository userRepository, PollAnswerClient pollAnswerClient) {
+        this.userRepository = userRepository;
+        this.pollAnswerClient = pollAnswerClient;
     }
 
     @Override
-    public User updateUser(User user) {
-        userRepository.updateUser(user);
-        return user;
+    public int createUser(User user) {
+        return userRepository.createUser(user);
     }
 
     @Override
-    public void deleteUser(Long id) {
-        userRepository.deleteUser(id);
+    public List<User> getAllUsers() {
+        return userRepository.getAllUsers();
     }
 
     @Override
@@ -47,7 +34,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.getAllUsers();
+    public int updateUser(User user) {
+        return userRepository.updateUser(user);
+    }
+
+    @Override
+    public int deleteUser(Long id) {
+        pollAnswerClient.deleteAnswersByUserId(id);
+        return userRepository.deleteUser(id);
     }
 }
